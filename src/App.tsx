@@ -1,5 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, FormEvent } from 'react';
 import './App.css';
+
+import logo from './logo.svg';
 
 type TodoData = {
   content: string,
@@ -27,25 +29,40 @@ function Todo({ id, data, callbacks }: TodoProps) {
   }
   return (
     <div className="todo-item">
-      <span>{checked ? <s>{content}</s> : content}</span>
+      <span className={"text " + (checked ? "checked" : "")}>
+        {checked ? <s>{content}</s> : content}
+      </span>
       <input type="checkbox" checked={checked} onChange={handleChange} />
       <button onClick={() => remove(id)}>X</button>
     </div>
   );
 }
 
+function TodoForm({ add }: { add: (content: string) => void }) {
+  function addTodo(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const target = e.target as HTMLFormElement;
+    const input = target.elements[0] as HTMLInputElement;
+    const content = input.value.trim();
+    if (content === '') return;
+    add(content);
+    input.value = '';
+  }
+  return (
+    <form onSubmit={addTodo}>
+      <input type="text" name="content" autoComplete="off" />
+      <button type="submit">Add</button>
+    </form>
+  );
+}
+
 function App() {
   const [state, setState] = useState({
-    todos: [{ content: 'Creat todo app', completed: false } as TodoData]
+    todos: [] as TodoData[]
   });
-  //                      like man wtf but whatever
-  const inputRef = useRef(null as unknown as HTMLInputElement);
-  const addTodo = () => {
-    const content = inputRef.current.value.trim();
-    if (content === '') return;
+  const addTodo = (content: string) => {
     state.todos.push({ content, completed: false });
     setState({ todos: state.todos });
-    inputRef.current.value = '';
   };
   const callbacks = {
     toggleChecked(id: number) {
@@ -56,22 +73,34 @@ function App() {
       setState({ todos: state.todos });
     },
   };
+  const itemsTab = state.todos.length === 0 ? (
+    <div className="welcome-tab">
+      <h1>Hello world</h1>
+      <h3>This is my todo app made with React</h3>
+      <img src={logo} className="App-logo" alt="logo" />
+      <p>
+        Write in the text input below and press the add button to add a todo
+        item.
+      </p>
+    </div>
+  ) : (
+    <div>
+      {state.todos.map((todoData, i) => {
+        return (
+          <Todo
+            key={i}
+            id={i}
+            data={todoData}
+            callbacks={callbacks}
+          />
+        );
+      })}
+    </div>
+  );
   return (
     <div className="App">
-      <div>
-        {state.todos.map((todoData, i) => {
-          return (
-            <Todo
-              key={i}
-              id={i}
-              data={todoData}
-              callbacks={callbacks}
-            />
-          );
-        })}
-      </div>
-      <input type="text" ref={inputRef} />
-      <button onClick={addTodo}>Add</button>
+      {itemsTab}
+      <TodoForm add={addTodo} />
     </div>
   );
 }

@@ -2,20 +2,122 @@
   height: 100%;
   margin: 0;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
 }
 
-.App > div {
+.App > div:first-child {
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 5%;
+}
+
+.App > div.welcome-tab > * {
+  margin: 20px auto 20px auto;
+}
+
+.App > div.welcome-tab > img {
+  height: 250px;
+  width: 250px;
+  background-color: #282c34;
+  margin: 40px auto 50px auto;
 }
 
 .App .todo-item {
   box-sizing: border-box;
-  width: 100%;
   min-height: 50px;
   background-color: rgb(255, 255, 240);
+  padding: 20px;
+  padding-right: 5px;
+  margin: 15px;
+  border-radius: 2.5%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.App .todo-item > .text {
+  flex-grow: calc(19/20);
+  font-size: 1.25em;
+  border: .5px solid grey;
+  box-sizing: border-box;
+  display: inline;
+  margin-right: 50px;
+  max-width: calc(100% - 40px * 3 - 2 * 50px);
+  word-break: break-word;
+  padding: 5px;
+}
+
+.App .todo-item > .text.checked {
+  background-color: black;
+  border-width: 5px;
+  padding: 0;
+  color: white;
+}
+
+.App .todo-item > input {
+  flex-grow: 0.3;
+}
+
+.App .todo-item > input[type="checkbox"] {
+  appearance: none;
+  box-sizing: border-box;
+  display: inline;
+  height: 40px;
+  max-width: 40px;
+  min-width: 40px;
+  border: 2px inset grey;
+  border-radius: 20%;
+  margin: 0 40px 0 0;
+  background-color: yellow;
+  display: inline;
+  flex-grow: calc(1/20);
+}
+
+.App .todo-item > input[type="checkbox"]:checked {
+  background-color: lime;
+}
+
+.App .todo-item > input[type="checkbox"]:checked:after {
+  content: '\2714';
+  font-size: 65px;
+  color: purple;
+}
+
+.App .todo-item > button {
+  background-color: red;
+  color: white;
+  border-radius: 25%;
+  height: 40px;
+  max-width: 40px;
+  min-width: 40px;
+  flex-grow: calc(1/50);
+  display: inline;
+}
+
+.App > form {
+  box-sizing: border-box;
+  width: calc(100% - 20px);
+  height: 10%;
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
   margin: 10px;
-  padding: 15px 10px 0 10px;
-  border-radius: 5%;
+  background-color: rgb(0, 150, 90);
+  border: 1px solid black;
+}
+
+.App > form > input {
+  flex-grow: calc(5/6);
+  margin: 5px;
+}
+
+.App > form > button {
+  flex-grow: calc(1/6);
 }
 
 .App-link {
